@@ -1,16 +1,12 @@
 {
   "mcpServers": {
     "codex": {
-      "command": "npx",
-      "args": ["codex-as-mcp@latest"],
-      "env": {
-        "PROVIDER_API_KEY": "${OPENAI_API_KEY}"
-      },
-      "timeout": 600
+      "command": "codex",
+      "args": ["mcp-server"]
     },
     "context7": {
       "command": "npx",
-      "args": ["@context7/mcp-server"]
+      "args": ["-y", "@upstash/context7-mcp@latest"]
     }
   }
 }

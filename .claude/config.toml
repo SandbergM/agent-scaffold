@@ -1,95 +1,75 @@
 # .claude/config.toml
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-# MCP server configuration for agent-scaffold projects.
-#
-# To activate a server: uncomment its block and fill in credentials.
+# MCP server configuration.
 # Run `claude mcp list` to verify active servers.
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-# ─── CORE: Codex CLI as review agent ─────────────────────────────
-# The backbone of the review pipeline. Gives Claude access to a
-# second LLM (GPT o3) for independent code and spec review.
-#
-# Setup:
-#   npm install -g codex-as-mcp  (or use npx, no install needed)
-#   Set your OpenAI API key below or in OPENAI_API_KEY env var
+# ─── CORE: Codex CLI (native MCP server) ─────────────────────────
+# Independent code review, spec review, second opinion.
+# Prereq: npm install -g @openai/codex
+# Auth: logged in via `codex` or OPENAI_API_KEY env var
 #
 [mcp_servers.codex]
-transport = "stdio"
+command = "codex"
+args = ["mcp-server"]
+
+# ─── DOCS: Context7 (live library documentation) ─────────────────
+# Pulls current docs for any library into agent context.
+# No API key needed. 9000+ libraries.
+# Usage: add "use context7" to your prompt.
+#
+[mcp_servers.context7]
 command = "npx"
-args = ["codex-as-mcp@latest"]
-tool_timeout_sec = 600
-# env = { PROVIDER_API_KEY = "sk-..." }
+args = ["-y", "@upstash/context7-mcp@latest"]
 
 # ─── BROWSER: Playwright (browser automation) ────────────────────
 # Full browser control — navigate, click, fill forms, screenshot.
-# Essential for: E2E testing, scraping, visual validation.
 #
 # [mcp_servers.playwright]
-# transport = "stdio"
 # command = "npx"
-# args = ["@anthropic-ai/mcp-server-playwright"]
-
-# ─── DOCS: Context7 (live library documentation) ─────────────────
-# Pulls current docs for any npm/PyPI library into agent context.
-# Prevents hallucinated APIs and outdated usage patterns.
-# No API key needed — free and open.
-#
-[mcp_servers.context7]
-transport = "stdio"
-command = "npx"
-args = ["@context7/mcp-server"]
+# args = ["-y", "@anthropic-ai/mcp-server-playwright"]
 
 # ─── DATA: PostgreSQL ────────────────────────────────────────────
 #
 # [mcp_servers.postgres]
-# transport = "stdio"
 # command = "npx"
-# args = ["@anthropic-ai/mcp-server-postgres", "postgresql://user:pass@localhost:5432/db"]
+# args = ["-y", "@anthropic-ai/mcp-server-postgres", "postgresql://user:pass@localhost:5432/db"]
 
 # ─── DATA: SQLite ────────────────────────────────────────────────
 #
 # [mcp_servers.sqlite]
-# transport = "stdio"
 # command = "npx"
-# args = ["@anthropic-ai/mcp-server-sqlite", "./data/app.db"]
+# args = ["-y", "@anthropic-ai/mcp-server-sqlite", "./data/app.db"]
 
 # ─── FILES: Extended filesystem access ───────────────────────────
 #
 # [mcp_servers.filesystem]
-# transport = "stdio"
 # command = "npx"
-# args = ["@anthropic-ai/mcp-server-filesystem", "/path/to/extra/dir"]
+# args = ["-y", "@anthropic-ai/mcp-server-filesystem", "/path/to/extra/dir"]
 
 # ─── GOOGLE: Google Workspace (Gmail, Drive, Calendar, Sheets) ───
 # Setup: npm install -g @googleworkspace/cli && gws auth login
 #
 # [mcp_servers.gws]
-# transport = "stdio"
 # command = "gws"
 # args = ["mcp", "-s", "drive,gmail,calendar,sheets"]
 
 # ─── MONITORING: Sentry (error tracking) ─────────────────────────
 #
 # [mcp_servers.sentry]
-# transport = "stdio"
 # command = "npx"
-# args = ["@sentry/mcp-server"]
+# args = ["-y", "@sentry/mcp-server"]
 # env = { SENTRY_AUTH_TOKEN = "..." }
 
 # ─── PM: Linear (issue tracking) ─────────────────────────────────
 #
 # [mcp_servers.linear]
-# transport = "stdio"
 # command = "npx"
-# args = ["@anthropic-ai/mcp-server-linear"]
+# args = ["-y", "@anthropic-ai/mcp-server-linear"]
 # env = { LINEAR_API_KEY = "..." }
 
 # ─── MULTI-AGENT: ai-cli-mcp (Claude + Codex + Gemini) ──────────
-# Enables spawning parallel agents from different providers.
-# Use for: multi-model review, competitive analysis, heavy parallelism.
 #
 # [mcp_servers.ai-cli]
-# transport = "stdio"
 # command = "npx"
-# args = ["ai-cli-mcp@latest"]
+# args = ["-y", "ai-cli-mcp@latest"]
