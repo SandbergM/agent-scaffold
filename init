@@ -1,0 +1,226 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# ─── agent-scaffold init ──────────────────────────────────────────
+# Bootstraps a new project with the full Claude Code + Codex MCP
+# agent pipeline. Sets up commands, agents, skills, hooks, and
+# templates, then guides you through the first steps.
+#
+# Usage:
+#   ./init [project-name]     # Create new project directory
+#   ./init                    # Bootstrap in current directory
+#   ./init --help             # Show this help
+# ──────────────────────────────────────────────────────────────────
+
+if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
+    echo "Usage: ./init [project-name]"
+    echo ""
+    echo "  ./init my-project    Create and scaffold a new project"
+    echo "  ./init               Scaffold the current directory"
+    echo ""
+    echo "What it sets up:"
+    echo "  .claude/             Commands, agents, skills, hooks, MCP config"
+    echo "  docs/                Spec and ADR templates"
+    echo "  CLAUDE.md            Project context (fill in with /kickoff)"
+    echo "  PROGRESS.md          Phase tracking"
+    echo ""
+    echo "After init, run:  claude /kickoff"
+    exit 0
+fi
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCAFFOLD_DIR="$SCRIPT_DIR"
+
+# ─── Colors ───────────────────────────────────────────────────────
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+BLUE='\033[0;34m'
+BOLD='\033[1m'
+NC='\033[0m'
+
+info()  { echo -e "  ${GREEN}✅${NC} $1"; }
+skip()  { echo -e "  ${YELLOW}⏭️${NC}  $1 (exists, skipping)"; }
+warn()  { echo -e "  ${YELLOW}⚠️${NC}  $1"; }
+fail()  { echo -e "  ${RED}❌${NC} $1"; }
+step()  { echo -e "\n${BLUE}${BOLD}$1${NC}"; }
+
+echo ""
+echo -e "${BOLD}🏗️  agent-scaffold init${NC}"
+echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+# ─── Resolve target directory ─────────────────────────────────────
+if [ $# -ge 1 ]; then
+    TARGET="$1"
+    mkdir -p "$TARGET"
+    cd "$TARGET"
+    echo -e "  📁 Created: ${BOLD}$TARGET/${NC}"
+else
+    TARGET="$(basename "$(pwd)")"
+    echo -e "  📁 Using: ${BOLD}$(pwd)${NC}"
+fi
+
+# ─── Copy scaffold files ─────────────────────────────────────────
+copy_if_missing() {
+    local src="$1"
+    local dst="$2"
+    local label="${3:-$dst}"
+    if [ ! -e "$dst" ]; then
+        cp -r "$src" "$dst"
+        info "$label"
+    else
+        skip "$label"
+    fi
+}
+
+step "📋 Copying scaffold files..."
+
+copy_if_missing "$SCAFFOLD_DIR/CLAUDE.md" "./CLAUDE.md" "CLAUDE.md (project context)"
+copy_if_missing "$SCAFFOLD_DIR/PROGRESS.md" "./PROGRESS.md" "PROGRESS.md (phase tracker)"
+copy_if_missing "$SCAFFOLD_DIR/.claude" "./.claude" ".claude/ (commands, agents, skills, hooks, MCP config)"
+copy_if_missing "$SCAFFOLD_DIR/docs" "./docs" "docs/ (templates, worklog, getting started)"
+
+# ─── Create standard directories ─────────────────────────────────
+step "📂 Creating project structure..."
+
+for dir in src tests docs/specs docs/adr docs/worklog/plans docs/worklog/checklists docs/worklog/sessions docs/worklog/reviews; do
+    mkdir -p "$dir"
+done
+info "src/ tests/ docs/specs/ docs/adr/ docs/worklog/{plans,checklists,sessions,reviews}"
+
+# ─── Initialize git ──────────────────────────────────────────────
+step "🔧 Setting up git..."
+
+if [ ! -d ".git" ]; then
+    git init -q
+    info "git init"
+else
+    skip "git already initialized"
+fi
+
+if [ ! -f ".gitignore" ]; then
+    cat > .gitignore << 'GITIGNORE'
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+dist/
+build/
+.next/
+
+# Secrets & env
+.env
+.env.*
+!.env.example
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Project
+*.log
+coverage/
+.pytest_cache/
+GITIGNORE
+    info ".gitignore"
+else
+    skip ".gitignore"
+fi
+
+# ─── Create .env.example ─────────────────────────────────────────
+if [ ! -f ".env.example" ]; then
+    cat > .env.example << 'ENV'
+# ─── API Keys ────────────────────────────────
+# ANTHROPIC_API_KEY=
+# OPENAI_API_KEY=
+
+# ─── Database ────────────────────────────────
+# DATABASE_URL=
+
+# ─── App Config ──────────────────────────────
+# APP_ENV=development
+# LOG_LEVEL=info
+ENV
+    info ".env.example"
+fi
+
+# ─── Check prerequisites ─────────────────────────────────────────
+step "🔍 Checking prerequisites..."
+
+MISSING=0
+
+check_tool() {
+    local tool="$1"
+    local install_hint="$2"
+    local required="${3:-true}"
+    if command -v "$tool" &> /dev/null; then
+        local version
+        version=$("$tool" --version 2>/dev/null | head -1 || echo "installed")
+        info "$tool ($version)"
+        return 0
+    else
+        if [ "$required" = "true" ]; then
+            fail "$tool — $install_hint"
+            MISSING=$((MISSING + 1))
+        else
+            warn "$tool — $install_hint (optional)"
+        fi
+        return 1
+    fi
+}
+
+check_tool "git" "Install git"
+check_tool "claude" "npm install -g @anthropic-ai/claude-code"
+check_tool "codex" "npm install -g @openai/codex (for MCP review agent)" "false"
+check_tool "node" "Install Node.js 18+" "false"
+
+# ─── Summary ──────────────────────────────────────────────────────
+step "🚀 Ready!"
+
+echo ""
+echo -e "  Your project scaffold is set up. Here's the workflow:"
+echo ""
+echo -e "  ${BOLD}1.${NC} ${BLUE}claude /kickoff${NC}"
+echo "     → Define project identity, tech stack, constraints"
+echo "     → Fills in CLAUDE.md interactively"
+echo ""
+echo -e "  ${BOLD}2.${NC} ${BLUE}claude /brainstorm${NC}"
+echo "     → Explore approaches, research prior art"
+echo "     → Records decisions as ADRs"
+echo ""
+echo -e "  ${BOLD}3.${NC} ${BLUE}claude /grill-me${NC}"
+echo "     → Adversarial requirements interview"
+echo "     → Produces battle-tested spec, reviewed by Codex"
+echo ""
+echo -e "  ${BOLD}4.${NC} ${BLUE}claude /architect${NC}"
+echo "     → System design, module breakdown, build order"
+echo ""
+echo -e "  ${BOLD}5.${NC} ${BLUE}claude /implement docs/specs/<slug>.md${NC}"
+echo "     → Build module by module with test + review gates"
+echo ""
+echo -e "  ${BOLD}6.${NC} ${BLUE}claude /ship${NC}"
+echo "     → Pre-deploy validation checklist"
+echo ""
+
+if [ "$MISSING" -gt 0 ]; then
+    echo -e "  ${RED}⚠️  $MISSING required tool(s) missing. Install them first.${NC}"
+    echo ""
+fi
+
+echo -e "  ${YELLOW}💡 Tip:${NC} Configure MCP servers in ${BOLD}.claude/config.toml${NC}"
+echo -e "  ${YELLOW}💡 Tip:${NC} Uncomment the codex server and set your OpenAI key"
+echo ""
