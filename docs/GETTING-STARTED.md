@@ -32,20 +32,29 @@ You need API keys for both:
 ## Step 1: Create Your Project
 
 ```bash
-# Clone the scaffold somewhere permanent
-git clone https://github.com/YOUR_USERNAME/agent-scaffold.git ~/agent-scaffold
-
-# Option A: Brand new project
-~/agent-scaffold/init my-awesome-project
+# Clone the scaffold directly as your project name
+git clone https://github.com/SandbergM/agent-scaffold.git my-awesome-project
 cd my-awesome-project
 
-# Option B: Add to existing project
-cd ~/existing-project
-~/agent-scaffold/init
+# Reset git history — your project gets a clean start
+rm -rf .git
+git init
+
+# Run init — creates dirs, checks tools, shows next steps
+./init
 ```
 
-The init script copies all commands, agents, skills, hooks, and templates
-into your project. It won't overwrite existing files.
+To add the scaffold to an **existing project** instead:
+
+```bash
+cd ~/existing-project
+git clone https://github.com/SandbergM/agent-scaffold.git /tmp/scaffold
+cp -r /tmp/scaffold/.claude /tmp/scaffold/docs /tmp/scaffold/CLAUDE.md /tmp/scaffold/PROGRESS.md .
+rm -rf /tmp/scaffold
+```
+
+The init script detects whether it's running inside a cloned scaffold
+(skips copying) or from an external location (copies files in).
 
 ---
 

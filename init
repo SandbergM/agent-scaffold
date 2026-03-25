@@ -15,16 +15,21 @@ set -euo pipefail
 if [[ "${1:-}" == "--help" || "${1:-}" == "-h" ]]; then
     echo "Usage: ./init [project-name]"
     echo ""
-    echo "  ./init my-project    Create and scaffold a new project"
-    echo "  ./init               Scaffold the current directory"
+    echo "  ./init               Scaffold the current directory (after cloning)"
+    echo "  ./init my-project    Create dir and copy scaffold files into it"
+    echo ""
+    echo "Typical flow:"
+    echo "  git clone https://github.com/SandbergM/agent-scaffold.git my-project"
+    echo "  cd my-project"
+    echo "  rm -rf .git && git init"
+    echo "  ./init"
+    echo "  claude /kickoff"
     echo ""
     echo "What it sets up:"
     echo "  .claude/             Commands, agents, skills, hooks, MCP config"
-    echo "  docs/                Spec and ADR templates"
+    echo "  docs/                Spec and ADR templates, worklog"
     echo "  CLAUDE.md            Project context (fill in with /kickoff)"
     echo "  PROGRESS.md          Phase tracking"
-    echo ""
-    echo "After init, run:  claude /kickoff"
     exit 0
 fi
 
@@ -50,7 +55,17 @@ echo -e "${BOLD}🏗️  agent-scaffold init${NC}"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 # ─── Resolve target directory ─────────────────────────────────────
+# Two modes:
+#   1. In-place: ./init (from inside a cloned scaffold) — files already here
+#   2. Copy:     ./init my-project (creates dir, copies scaffold files into it)
+
+SCAFFOLD_IS_HERE=false
+if [ -f "$SCAFFOLD_DIR/SCAFFOLD.md" ] && [ -d "$SCAFFOLD_DIR/.claude/commands" ]; then
+    SCAFFOLD_IS_HERE=true
+fi
+
 if [ $# -ge 1 ]; then
+    # Copy mode — create target dir and copy scaffold files
     TARGET="$1"
     mkdir -p "$TARGET"
     cd "$TARGET"
@@ -60,7 +75,7 @@ else
     echo -e "  📁 Using: ${BOLD}$(pwd)${NC}"
 fi
 
-# ─── Copy scaffold files ─────────────────────────────────────────
+# ─── Copy or verify scaffold files ────────────────────────────────
 copy_if_missing() {
     local src="$1"
     local dst="$2"
@@ -73,12 +88,21 @@ copy_if_missing() {
     fi
 }
 
-step "📋 Copying scaffold files..."
+step "📋 Scaffold files..."
 
-copy_if_missing "$SCAFFOLD_DIR/CLAUDE.md" "./CLAUDE.md" "CLAUDE.md (project context)"
-copy_if_missing "$SCAFFOLD_DIR/PROGRESS.md" "./PROGRESS.md" "PROGRESS.md (phase tracker)"
-copy_if_missing "$SCAFFOLD_DIR/.claude" "./.claude" ".claude/ (commands, agents, skills, hooks, MCP config)"
-copy_if_missing "$SCAFFOLD_DIR/docs" "./docs" "docs/ (templates, worklog, getting started)"
+if [ "$(cd "$SCAFFOLD_DIR" && pwd)" = "$(pwd)" ] && [ "$SCAFFOLD_IS_HERE" = true ]; then
+    # In-place mode — scaffold files are already here
+    info "CLAUDE.md (already here)"
+    info "PROGRESS.md (already here)"
+    info ".claude/ (already here)"
+    info "docs/ (already here)"
+else
+    # Copy mode — copy from scaffold source
+    copy_if_missing "$SCAFFOLD_DIR/CLAUDE.md" "./CLAUDE.md" "CLAUDE.md (project context)"
+    copy_if_missing "$SCAFFOLD_DIR/PROGRESS.md" "./PROGRESS.md" "PROGRESS.md (phase tracker)"
+    copy_if_missing "$SCAFFOLD_DIR/.claude" "./.claude" ".claude/ (commands, agents, skills, hooks, MCP config)"
+    copy_if_missing "$SCAFFOLD_DIR/docs" "./docs" "docs/ (templates, worklog, getting started)"
+fi
 
 # ─── Create standard directories ─────────────────────────────────
 step "📂 Creating project structure..."

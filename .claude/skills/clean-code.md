@@ -15,6 +15,7 @@ When writing code in this project, always apply these patterns:
 ## Naming
 - Functions: verb_noun (calculate_price, fetch_user, validate_input)
 - Classes: singular nouns (PriceCalculator, UserRepository)
+- Files: snake_case of the class they contain (PriceCalculator → price_calculator.py)
 - Booleans: is_, has_, can_ prefix
 - Constants: UPPER_SNAKE_CASE
 

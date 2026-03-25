@@ -32,7 +32,8 @@
 
 These are enforced by the `rule-enforcer` agent and the pre-commit hook.
 
-1. One class per file
+1. One class per file — file name matches class name in snake_case
+   (`UserService` → `user_service.py`, `MysqlClient` → `mysql_client.py`)
 2. Max 4 params per function — use DTO/Pydantic model beyond that
 3. Max 50 lines per function — extract helpers
 4. No bumpy road — max 3 nesting levels, early returns, guard clauses

@@ -9,16 +9,28 @@ gates at every step.
 ## Quick Start
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/agent-scaffold.git
-
-# New project
-./init my-project
+# Clone scaffold as your new project name
+git clone https://github.com/SandbergM/agent-scaffold.git my-project
 cd my-project
-claude /kickoff
 
-# Existing project
+# Reset git history — start fresh
+rm -rf .git
+git init
+
+# Bootstrap (verifies tools, creates dirs, shows workflow)
+./init
+
+# Start building
+claude /kickoff
+```
+
+To add the scaffold to an **existing project** instead:
+
+```bash
 cd existing-project
-../agent-scaffold/init
+git clone https://github.com/SandbergM/agent-scaffold.git /tmp/scaffold
+cp -r /tmp/scaffold/.claude /tmp/scaffold/docs /tmp/scaffold/CLAUDE.md /tmp/scaffold/PROGRESS.md .
+rm -rf /tmp/scaffold
 ```
 
 ## The Lifecycle
