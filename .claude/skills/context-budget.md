@@ -58,15 +58,16 @@ conversations. When it fills up, compaction kicks in and you lose details.
 
 When a session is getting long:
 
-1. **Check your bearings** — re-read CLAUDE.md and the current plan from
-   `.claude/worklog/plans/` to re-anchor.
+1. **Invoke the summarizer agent** — it compresses your current session
+   into a 30-line snapshot saved to worklog. Do this proactively at ~50%
+   context usage, not when it's too late.
 
 2. **Write before you forget** — if you've made important decisions or
    found important things, write them to `.claude/worklog/sessions/`
    NOW, not at the end.
 
-3. **Tell the user** — "We've been going a while. Let me save our progress
-   to the worklog so nothing's lost if we need a fresh session."
+3. **Tell the user** — "Session is getting long. I've saved a snapshot.
+   Want to continue or start fresh with `/catchup`?"
 
 4. **Fresh session strategy** — if context is getting bloated:
    - Save everything to worklog

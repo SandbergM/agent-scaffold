@@ -53,13 +53,19 @@ These are enforced by the `rule-enforcer` agent and the pre-commit hook.
                           /discuss  (Claude ↔ Codex dialogue at any point)
 ```
 
+### Resuming a project (new session)
+```
+/catchup → see briefing → continue where you left off
+```
+
 ### Existing project (add feature)
 ```
-/feature "description" → /run → /review → /ship
+/catchup → /feature "description" → /run → /review → /ship
 ```
 
 ### Maintenance
 ```
+/catchup    — always start here when resuming
 /audit      — deep bug hunt with Claude + Codex
 /debug      — structured debugging for a specific issue
 /refactor   — safe restructuring with tests first
@@ -68,6 +74,7 @@ These are enforced by the `rule-enforcer` agent and the pre-commit hook.
 /retro      — retrospective: what worked, what didn't, learnings
 ```
 
+0. **Catchup** — Start every new session here. Reads worklog, shows briefing
 1. **Kickoff** — Project identity, tech stack, constraints, mcp.json generation
 2. **Brainstorm** — Explore approaches, research prior art, weigh trade-offs
 3. **Grill-me** — Adversarial requirements interview
@@ -130,6 +137,7 @@ tests/                 # Mirrors source structure
 | DevOps | Sonnet | Infra review, Dockerfiles, deployment readiness |
 | Adversarial Tester | Sonnet | Tries to BREAK the code — fuzzing, edge cases, chaos |
 | Simplifier | Sonnet | Flags unnecessary complexity and overengineering |
+| Summarizer | Sonnet | Compresses session state into short-term memory snapshots |
 | Doc Enforcer | Sonnet | Ensures meaningful docs, catches AI filler |
 | UX Reviewer | Sonnet | Usability, consistency, accessibility, error messages |
 | Tasks | Sonnet | Tests, formatting, bounded extraction |

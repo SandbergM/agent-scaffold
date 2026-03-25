@@ -11,7 +11,10 @@ work, contradicted decisions, and lost context across sessions.
 
 ## Before Starting Any Command
 
-ALWAYS do this first:
+**Best practice:** Run `/catchup` at the start of every new session.
+It does everything below automatically and presents a briefing.
+
+If running a command directly (not starting with /catchup), ALWAYS do this:
 
 1. **Read recent sessions** — `ls .claude/worklog/sessions/` and read the
    last 3-5 files (sorted by date). Understand:

@@ -223,6 +223,7 @@ Once your project is running, these commands handle ongoing work:
 
 | Need to... | Run |
 |-----------|-----|
+| **Start a new session** | **`claude /catchup`** (always do this first) |
 | Add a feature | `claude /feature "description"` |
 | Debate an approach | `claude /discuss "how should we handle X?"` |
 | Fix a bug | `claude /debug` |

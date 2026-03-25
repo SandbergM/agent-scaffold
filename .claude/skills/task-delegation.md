@@ -29,6 +29,7 @@ Do NOT delegate when:
 | Review UI/UX quality | ux-reviewer (Sonnet) | Usability + accessibility |
 | Review infra/Docker | devops (Sonnet) | Dockerfile, compose, env management |
 | Check scope + value | product-manager (Sonnet) | Scope creep, prioritization, YAGNI |
+| Compress session state | summarizer (Sonnet) | Save context before compaction |
 | Security audit | pentester (Opus + Codex) | Needs deep reasoning |
 | Research library options | researcher (Sonnet) | Bounded research, cheap |
 | Debate architecture | /discuss (Opus + Codex) | Multi-round dialogue |
