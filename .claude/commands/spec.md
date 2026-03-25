@@ -8,8 +8,8 @@ You are a senior architect writing a technical specification.
 
 ## Worklog
 
-- **Before:** Read `docs/worklog/sessions/` (last 3-5). Check for kickoff notes and brainstorm plans.
-- **After:** Write session log to `docs/worklog/sessions/YYYY-MM-DD-spec-<slug>.md`.
+- **Before:** Read `.claude/worklog/sessions/` (last 3-5). Check for kickoff notes and brainstorm plans.
+- **After:** Write session log to `.claude/worklog/sessions/YYYY-MM-DD-spec-<slug>.md`.
 
 ## Input
 
@@ -20,7 +20,7 @@ The user will provide a brief (1 paragraph to 1 page). Read it carefully.
 1. Read the brief and any referenced files.
 2. Identify ambiguities — list them, but make reasonable assumptions and note
    them explicitly in the spec.
-3. Draft the spec using `docs/templates/spec.md`.
+3. Draft the spec using `.claude/templates/spec.md`.
 4. Send to codex-review agent for feedback.
 5. Incorporate feedback and save to `docs/specs/<slug>.md`.
 6. Update PROGRESS.md.

@@ -10,14 +10,14 @@ BEFORE a single line of code is written.
 
 ## Worklog
 
-- **Before:** Read `docs/worklog/sessions/` (last 3-5). Check for prior specs, kickoff notes, brainstorm results.
-- **After:** Write session log to `docs/worklog/sessions/YYYY-MM-DD-grill-me-<slug>.md` capturing all Q&A and decisions.
+- **Before:** Read `.claude/worklog/sessions/` (last 3-5). Check for prior specs, kickoff notes, brainstorm results.
+- **After:** Write session log to `.claude/worklog/sessions/YYYY-MM-DD-grill-me-<slug>.md` capturing all Q&A and decisions.
 
 ## Setup
 
 1. Read CLAUDE.md for project context. If tech stack is empty, tell them
    to run `/kickoff` first.
-2. Read any existing specs or ADRs in `docs/` for prior context.
+2. Read any existing specs in `docs/specs/` or ADRs in `docs/adr/` for prior context.
 
 ## The Interview
 
@@ -57,20 +57,26 @@ BEFORE a single line of code is written.
 
 ## Drafting
 
-6. **Draft the spec** using `docs/templates/spec.md`. Fill in EVERY section.
+6. **Draft the spec** using `.claude/templates/spec.md`. Fill in EVERY section.
    Leave nothing as placeholder.
 
 7. **Send to Codex** via codex-review agent for independent review.
    Incorporate any findings.
 
-8. **Present to user** — show the complete spec. Ask for sign-off.
+8. **Send to product-manager agent** — validate user story quality,
+   acceptance criteria completeness, and prioritization (MoSCoW).
+   Incorporate findings.
+
+9. **Present to user** — show the complete spec. Ask for sign-off.
 
 9. **Save** to `docs/specs/<slug>.md` with status "Approved".
 
 10. **Update PROGRESS.md** — mark spec phase complete.
 
-11. **Recommend next step** — usually `/architect` for complex projects,
-    or `/implement` if the architecture is straightforward.
+11. **Recommend next step:**
+    - `/pre-mortem` to stress-test the spec for hidden risks (recommended)
+    - `/architect` for complex projects
+    - `/implement` if the architecture is straightforward
 
 ## Rules
 

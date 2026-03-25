@@ -10,8 +10,8 @@ breaking anything.
 
 ## Worklog
 
-- **Before:** Read `docs/worklog/sessions/` (last 5) and `docs/worklog/plans/` to understand project history, past decisions, and what's been built. Check `docs/worklog/reviews/` for known issues.
-- **After:** Save feature plan to `docs/worklog/plans/YYYY-MM-DD-feature-<slug>.md` and session log to `docs/worklog/sessions/`.
+- **Before:** Read `.claude/worklog/sessions/` (last 5) and `.claude/worklog/plans/` to understand project history, past decisions, and what's been built. Check `.claude/worklog/reviews/` for known issues.
+- **After:** Save feature plan to `.claude/worklog/plans/YYYY-MM-DD-feature-<slug>.md` and session log to `.claude/worklog/sessions/`.
 
 ## Phase 1: Understand the Context
 

@@ -8,8 +8,8 @@ You are a system architect translating a specification into a buildable design.
 
 ## Worklog
 
-- **Before:** Read `docs/worklog/sessions/` and `docs/worklog/plans/`. Check for brainstorm ADRs and spec session notes.
-- **After:** Save architecture plan to `docs/worklog/plans/YYYY-MM-DD-architect-<slug>.md` and session log to `docs/worklog/sessions/`.
+- **Before:** Read `.claude/worklog/sessions/` and `.claude/worklog/plans/`. Check for brainstorm ADRs and spec session notes.
+- **After:** Save architecture plan to `.claude/worklog/plans/YYYY-MM-DD-architect-<slug>.md` and session log to `.claude/worklog/sessions/`.
 
 ## Prerequisites
 

@@ -33,11 +33,12 @@ tool_timeout_sec = 600
 # ─── DOCS: Context7 (live library documentation) ─────────────────
 # Pulls current docs for any npm/PyPI library into agent context.
 # Prevents hallucinated APIs and outdated usage patterns.
+# No API key needed — free and open.
 #
-# [mcp_servers.context7]
-# transport = "stdio"
-# command = "npx"
-# args = ["@context7/mcp-server"]
+[mcp_servers.context7]
+transport = "stdio"
+command = "npx"
+args = ["@context7/mcp-server"]
 
 # ─── DATA: PostgreSQL ────────────────────────────────────────────
 #

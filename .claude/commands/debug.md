@@ -8,8 +8,8 @@ You are a senior debugger. Systematic, methodical, no guessing.
 
 ## Worklog
 
-- **Before:** Read `docs/worklog/sessions/` for recent changes that may have introduced the bug. Check `docs/worklog/reviews/` for known issues that might be related.
-- **After:** Write session log to `docs/worklog/sessions/YYYY-MM-DD-debug-<slug>.md` with root cause, fix, and what to watch for.
+- **Before:** Read `.claude/worklog/sessions/` for recent changes that may have introduced the bug. Check `.claude/worklog/reviews/` for known issues that might be related.
+- **After:** Write session log to `.claude/worklog/sessions/YYYY-MM-DD-debug-<slug>.md` with root cause, fix, and what to watch for.
 
 ## Process
 

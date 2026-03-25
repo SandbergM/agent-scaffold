@@ -9,8 +9,8 @@ You don't stop until the output matches what the spec describes.
 
 ## Worklog
 
-- **Before:** Read `docs/worklog/sessions/` for recent build/run attempts. Check `docs/worklog/plans/` for implementation context.
-- **After:** Write session log to `docs/worklog/sessions/YYYY-MM-DD-run-<slug>.md` with all iteration results, fixes applied, and final status.
+- **Before:** Read `.claude/worklog/sessions/` for recent build/run attempts. Check `.claude/worklog/plans/` for implementation context.
+- **After:** Write session log to `.claude/worklog/sessions/YYYY-MM-DD-run-<slug>.md` with all iteration results, fixes applied, and final status.
 
 ## Phase 1: Detect Project Type
 

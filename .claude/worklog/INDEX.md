@@ -10,7 +10,7 @@ done before.
 ## Structure
 
 ```
-docs/worklog/
+.claude/worklog/
 ├── plans/        # Implementation plans, feature plans, architecture notes
 ├── checklists/   # Active and completed checklists (ship, audit, review)
 ├── sessions/     # Session logs — what was done, decisions made, blockers hit
@@ -61,7 +61,7 @@ Examples:
 
 When starting any command:
 
-1. Read `docs/worklog/sessions/` — check the last 3-5 session logs
+1. Read `.claude/worklog/sessions/` — check the last 3-5 session logs
 2. Read any relevant plans or checklists in the other subfolders
 3. Use this context to avoid re-doing work or contradicting past decisions
 

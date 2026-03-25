@@ -48,7 +48,9 @@ These are enforced by the `rule-enforcer` agent and the pre-commit hook.
 
 ### New project (greenfield)
 ```
-/kickoff → /brainstorm → /grill-me → /architect → /implement → /run → /ship
+/kickoff → /brainstorm → /grill-me → /pre-mortem → /architect → /implement → /run → /ship → /retro
+                              ↕
+                          /discuss  (Claude ↔ Codex dialogue at any point)
 ```
 
 ### Existing project (add feature)
@@ -58,56 +60,63 @@ These are enforced by the `rule-enforcer` agent and the pre-commit hook.
 
 ### Maintenance
 ```
-/audit    — deep bug hunt with Claude + Codex
-/debug    — structured debugging for a specific issue
-/refactor — safe restructuring with tests first
+/audit      — deep bug hunt with Claude + Codex
+/debug      — structured debugging for a specific issue
+/refactor   — safe restructuring with tests first
+/pre-mortem — stress-test a spec or plan for hidden risks
+/discuss    — Claude ↔ Codex dialogue on any topic
+/retro      — retrospective: what worked, what didn't, learnings
 ```
 
-1. **Kickoff** — Set up project identity, tech stack, constraints
+1. **Kickoff** — Project identity, tech stack, constraints, mcp.json generation
 2. **Brainstorm** — Explore approaches, research prior art, weigh trade-offs
-3. **Grill-me** — Nail down requirements through adversarial questioning
-4. **Architect** — Design system, write ADRs for key decisions
-5. **Implement** — Build module by module with test + review gates
-6. **Run** — Build, start, evaluate output, iterate until spec-correct
-7. **Review** — Codex reviews via MCP, rule-enforcer validates conventions
-8. **Ship** — Pre-deploy checklist, final validation
-9. **Feature** — Add to an existing project without breaking it
-10. **Audit** — Claude + Codex deep-dive the codebase for bugs + security
+3. **Grill-me** — Adversarial requirements interview
+4. **Pre-mortem** — "Imagine this failed. Why?" Finds blind spots
+5. **Discuss** — Multi-round Claude ↔ Codex dialogue to debate and converge
+6. **Architect** — System design, write ADRs for key decisions
+7. **Implement** — Build module by module with test + review gates
+8. **Run** — Build, start, evaluate output, iterate until spec-correct
+9. **Review** — Fan-out: Codex + simplifier + rules + docs + security + UX
+10. **Ship** — Pre-deploy checklist, CI/CD generation, final validation
+11. **Feature** — Add to an existing project without breaking it
+12. **Audit** — Claude + Codex deep-dive for bugs + security
+13. **Retro** — Post-project: what worked, what to improve next time
 
 Never skip from Kickoff to Implement. The middle steps exist to prevent rework.
 
 ## Agent Memory
 
-All agents read and write to `docs/worklog/`. This is the shared memory
+All agents read and write to `.claude/worklog/`. This is the shared memory
 that persists across sessions. Agents MUST:
 
 1. **Read** recent session logs before starting any work
 2. **Write** a session log after completing any command
 3. **Check** for contradictions with past decisions before making new ones
 
-See `docs/worklog/INDEX.md` for full conventions.
+See `.claude/worklog/INDEX.md` for full conventions.
 
 ## Directory Layout
 
 ```
-src/               # Application source
-tests/             # Mirrors src/ structure
+CLAUDE.md              # Project brain (this file) — stays in root
 docs/
-  specs/           # Approved specifications
-  adr/             # Architecture Decision Records
-  templates/       # Templates for specs, ADRs, session logs
-  worklog/         # Shared agent memory (plans, checklists, sessions, reviews)
-    plans/         # Implementation plans, feature plans, architecture notes
-    checklists/    # Ship, audit, and review checklists
-    sessions/      # Session logs — what was done, decisions, next steps
-    reviews/       # Code and spec review reports
-scripts/           # Shell scripts and utilities
+  specs/               # Approved specifications
+  adr/                 # Architecture Decision Records
 .claude/
-  commands/        # Slash commands (/grill-me, /spec, etc.)
-  agents/          # Subagents (codex-review, test-writer, etc.)
-  skills/          # Reusable coding skills
-  hooks/           # Pre-commit, post-implementation hooks
-  config.toml      # MCP server configuration
+  commands/            # Slash commands (/grill-me, /discuss, etc.)
+  agents/              # Subagents (codex-review, pentester, etc.)
+  skills/              # Reusable coding skills
+  hooks/               # Pre-commit hooks
+  templates/           # Templates for specs, ADRs, session logs
+  worklog/             # Shared agent memory
+    plans/             # Implementation plans, feature plans, architecture notes
+    checklists/        # Ship, audit, and review checklists
+    sessions/          # Session logs — what was done, decisions, next steps
+    reviews/           # Code/spec/security review reports
+  config.toml          # MCP server configuration
+  PROGRESS.md          # Phase tracker with checklists
+src/ or app/           # Application source
+tests/                 # Mirrors source structure
 ```
 
 ## Agent Configuration
@@ -116,6 +125,13 @@ scripts/           # Shell scripts and utilities
 |------|-------|---------|
 | Lead | Opus | Architecture, spec iteration, complex logic |
 | Review | Codex (o3) via MCP | Independent code + spec review |
+| Product Manager | Sonnet | Scope control, prioritization, acceptance criteria |
+| Pentester | Opus + Codex | Security audit, auth/token analysis, OWASP |
+| DevOps | Sonnet | Infra review, Dockerfiles, deployment readiness |
+| Adversarial Tester | Sonnet | Tries to BREAK the code — fuzzing, edge cases, chaos |
+| Simplifier | Sonnet | Flags unnecessary complexity and overengineering |
+| Doc Enforcer | Sonnet | Ensures meaningful docs, catches AI filler |
+| UX Reviewer | Sonnet | Usability, consistency, accessibility, error messages |
 | Tasks | Sonnet | Tests, formatting, bounded extraction |
 | Research | Sonnet | Prior art, library evaluation |
 

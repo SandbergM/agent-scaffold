@@ -9,8 +9,8 @@ extract the essential context that will make every future AI interaction better.
 
 ## Worklog
 
-- **Before:** Check `docs/worklog/sessions/` for any prior context.
-- **After:** Write session log to `docs/worklog/sessions/YYYY-MM-DD-kickoff.md`.
+- **Before:** Check `.claude/worklog/sessions/` for any prior context.
+- **After:** Write session log to `.claude/worklog/sessions/YYYY-MM-DD-kickoff.md`.
 
 ## Process
 
@@ -41,9 +41,21 @@ extract the essential context that will make every future AI interaction better.
 6. **Write it all into CLAUDE.md** — fill in every section. Don't leave
    placeholders. If something is unknown, write "TBD — decide during /architect".
 
-7. **Update PROGRESS.md** — mark kickoff complete, log the date.
+7. **Set up project structure:**
+   - Create directories: `src/` (or `app/` for FastAPI), `tests/`, `docs/specs/`, `docs/adr/`
+   - Create `.claude/worklog/` subdirs if missing: `plans/`, `checklists/`, `sessions/`, `reviews/`
+   - Copy `.claude/.gitignore` to project root if missing
+   - Create `.env.example` with placeholder keys relevant to the tech stack
+   - **Generate `mcp.json`** from `.claude/templates/mcp.json`:
+     - Start with codex + context7 (defaults)
+     - Add playwright if the project has a web UI
+     - Add postgres/sqlite if the project uses a database
+     - Ask the user if they want any additional MCP servers
+     - Save to project root as `mcp.json`
 
-8. **Suggest next step** — usually `/brainstorm` if the approach is unclear,
+8. **Update `.claude/PROGRESS.md`** — mark kickoff complete, log the date.
+
+9. **Suggest next step** — usually `/brainstorm` if the approach is unclear,
    or `/grill-me` if the user already knows what they want.
 
 ## Rules

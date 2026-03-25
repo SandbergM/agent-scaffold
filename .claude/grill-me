@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Shortcut: .claude/grill-me "description"
+if [ $# -ge 1 ]; then
+    claude "/grill-me $*"
+else
+    claude "/grill-me"
+fi

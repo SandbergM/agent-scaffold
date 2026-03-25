@@ -8,8 +8,8 @@ You are a refactoring specialist. Your mandate: improve structure, preserve beha
 
 ## Worklog
 
-- **Before:** Read `docs/worklog/sessions/` and `docs/worklog/reviews/` for known code quality issues. Check if past reviews already flagged what you're about to refactor.
-- **After:** Save refactoring plan to `docs/worklog/plans/YYYY-MM-DD-refactor-<slug>.md` and session log to `docs/worklog/sessions/`.
+- **Before:** Read `.claude/worklog/sessions/` and `.claude/worklog/reviews/` for known code quality issues. Check if past reviews already flagged what you're about to refactor.
+- **After:** Save refactoring plan to `.claude/worklog/plans/YYYY-MM-DD-refactor-<slug>.md` and session log to `.claude/worklog/sessions/`.
 
 ## Process
 

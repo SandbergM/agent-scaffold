@@ -9,8 +9,8 @@ it's to ensure we pick the right approach before building.
 
 ## Worklog
 
-- **Before:** Read `docs/worklog/sessions/` (last 3-5). Check `docs/worklog/plans/` for prior brainstorms.
-- **After:** Save brainstorm summary to `docs/worklog/plans/YYYY-MM-DD-brainstorm-<slug>.md` and session log to `docs/worklog/sessions/`.
+- **Before:** Read `.claude/worklog/sessions/` (last 3-5). Check `.claude/worklog/plans/` for prior brainstorms.
+- **After:** Save brainstorm summary to `.claude/worklog/plans/YYYY-MM-DD-brainstorm-<slug>.md` and session log to `.claude/worklog/sessions/`.
 
 ## Process
 

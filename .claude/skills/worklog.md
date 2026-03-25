@@ -1,19 +1,19 @@
 ---
 name: worklog
 description: Shared agent memory. Read before starting work, write when done. Applied to all commands automatically.
-globs: ["docs/worklog/**/*.md"]
+globs: [".claude/worklog/**/*.md"]
 ---
 
 ## The Worklog Convention
 
-`docs/worklog/` is the shared memory for all agents. It prevents duplicated
+`.claude/worklog/` is the shared memory for all agents. It prevents duplicated
 work, contradicted decisions, and lost context across sessions.
 
 ## Before Starting Any Command
 
 ALWAYS do this first:
 
-1. **Read recent sessions** — `ls docs/worklog/sessions/` and read the
+1. **Read recent sessions** — `ls .claude/worklog/sessions/` and read the
    last 3-5 files (sorted by date). Understand:
    - What was done recently
    - What decisions were made
@@ -38,6 +38,8 @@ ALWAYS do this last:
    | `/kickoff` | `sessions/` |
    | `/brainstorm` | `plans/` + `sessions/` |
    | `/grill-me` | `sessions/` |
+   | `/pre-mortem` | `reviews/` + `sessions/` |
+   | `/discuss` | `plans/` + `sessions/` |
    | `/architect` | `plans/` + `sessions/` |
    | `/implement` | `plans/` + `sessions/` |
    | `/run` | `sessions/` |
@@ -47,8 +49,9 @@ ALWAYS do this last:
    | `/refactor` | `plans/` + `sessions/` |
    | `/debug` | `sessions/` |
    | `/ship` | `checklists/` + `sessions/` |
+   | `/retro` | `sessions/` |
 
-2. **Write a session log** using `docs/templates/session-log.md`:
+2. **Write a session log** using `.claude/templates/session-log.md`:
    - Date and command
    - What was accomplished
    - Decisions with reasoning

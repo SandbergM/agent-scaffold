@@ -37,32 +37,35 @@ git clone https://github.com/SandbergM/agent-scaffold.git my-awesome-project
 cd my-awesome-project
 
 # Reset git history — your project gets a clean start
-rm -rf .git
-git init
+rm -rf .git && git init
 
-# Run init — creates dirs, checks tools, shows next steps
-./init
+# Run init — creates dirs, checks tools
+.claude/init
+
+# Start
+claude /kickoff
 ```
 
-To add the scaffold to an **existing project** instead:
+To add the scaffold to an **existing project**:
 
 ```bash
 cd ~/existing-project
 git clone https://github.com/SandbergM/agent-scaffold.git /tmp/scaffold
-cp -r /tmp/scaffold/.claude /tmp/scaffold/docs /tmp/scaffold/CLAUDE.md /tmp/scaffold/PROGRESS.md .
+cp -r /tmp/scaffold/.claude /tmp/scaffold/CLAUDE.md .
 rm -rf /tmp/scaffold
+.claude/init
 ```
-
-The init script detects whether it's running inside a cloned scaffold
-(skips copying) or from an external location (copies files in).
 
 ---
 
 ## Step 2: Configure MCP Servers
 
-Open `.claude/config.toml` and set up the servers you need.
+Open `.claude/config.toml`. Two servers are enabled by default:
 
-**Minimum viable setup** — just Codex for reviews:
+- **Codex** — independent code review (needs your OpenAI API key)
+- **Context7** — live library docs (free, no config needed)
+
+Set your OpenAI key for Codex:
 
 ```toml
 [mcp_servers.codex]
@@ -73,14 +76,14 @@ tool_timeout_sec = 600
 env = { PROVIDER_API_KEY = "sk-your-openai-key" }
 ```
 
-**Recommended extras** depending on your project:
+**Additional servers** depending on your project:
 
 | You're building... | Enable these servers |
 |--------------------|---------------------|
-| Web app | playwright, context7 |
+| Web app with E2E tests | playwright |
 | API with database | postgres or sqlite |
 | Google integrations | gws |
-| Something with error tracking | sentry |
+| Error tracking | sentry |
 
 Uncomment the relevant blocks in `config.toml` and fill in credentials.
 
@@ -130,7 +133,7 @@ claude /grill-me
 Or with a brief:
 
 ```bash
-./grill-me "I want to build a CLI tool that scrapes pricing data from
+.claude/grill-me "I want to build a CLI tool that scrapes pricing data from
 Swedish e-commerce sites and caches the calculation logic locally"
 ```
 
@@ -221,11 +224,14 @@ Once your project is running, these commands handle ongoing work:
 | Need to... | Run |
 |-----------|-----|
 | Add a feature | `claude /feature "description"` |
+| Debate an approach | `claude /discuss "how should we handle X?"` |
 | Fix a bug | `claude /debug` |
 | Refactor messy code | `claude /refactor` |
 | Deep audit for bugs | `claude /audit` |
+| Security audit | `claude /audit` (pentester runs automatically) |
 | Review before merge | `claude /review` |
 | Build and validate | `claude /run` |
+| Stress-test a plan | `claude /pre-mortem` |
 
 ---
 
@@ -251,7 +257,7 @@ architecture, dropped feature), update CLAUDE.md. Every agent reads it.
 Stale context = bad output.
 
 **Check the worklog.** All agents save their plans, reviews, and session
-logs to `docs/worklog/`. If you're wondering "what did we decide about X?"
+logs to `.claude/worklog/`. If you're wondering "what did we decide about X?"
 or "what happened last session?", look there. Every agent reads the last
 3-5 session logs before starting work, so they remember what's been done.
 

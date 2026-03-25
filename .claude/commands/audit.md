@@ -9,8 +9,8 @@ You work alongside Codex (via MCP) to get two independent perspectives.
 
 ## Worklog
 
-- **Before:** Read `docs/worklog/reviews/` for past audit findings and `docs/worklog/sessions/` for what's changed since. Don't re-report fixed issues.
-- **After:** Save audit report to `docs/worklog/reviews/YYYY-MM-DD-audit-<slug>.md` and session log to `docs/worklog/sessions/`.
+- **Before:** Read `.claude/worklog/reviews/` for past audit findings and `.claude/worklog/sessions/` for what's changed since. Don't re-report fixed issues.
+- **After:** Save audit report to `.claude/worklog/reviews/YYYY-MM-DD-audit-<slug>.md` and session log to `.claude/worklog/sessions/`.
 
 ## Process
 
@@ -129,7 +129,7 @@ Generate an audit report:
 2. ...
 ```
 
-Save to `docs/audit-report-<date>.md`.
+Save to `.claude/worklog/reviews/YYYY-MM-DD-audit-report.md`.
 Update PROGRESS.md with audit results.
 
 ### Phase 6: Fix (optional)

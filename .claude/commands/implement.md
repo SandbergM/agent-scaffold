@@ -8,8 +8,8 @@ You are a senior developer implementing a specification.
 
 ## Worklog
 
-- **Before:** Read `docs/worklog/plans/` for architecture plan and `docs/worklog/sessions/` for recent context. Check `docs/worklog/reviews/` for past review feedback.
-- **After:** Save implementation plan to `docs/worklog/plans/YYYY-MM-DD-implement-<slug>.md` and session log to `docs/worklog/sessions/`. Log each phase completion.
+- **Before:** Read `.claude/worklog/plans/` for architecture plan and `.claude/worklog/sessions/` for recent context. Check `.claude/worklog/reviews/` for past review feedback.
+- **After:** Save implementation plan to `.claude/worklog/plans/YYYY-MM-DD-implement-<slug>.md` and session log to `.claude/worklog/sessions/`. Log each phase completion.
 
 ## Prerequisites Check
 
@@ -76,8 +76,11 @@ From CLAUDE.md — never violate these:
 
 After all phases complete:
 1. Run full test suite
-2. Run rule-enforcer on entire `src/`
-3. Send full diff to codex-review
-4. Address all review findings
-5. Update PROGRESS.md to reflect build completion
-6. Suggest running `/ship` for final validation
+2. Run rule-enforcer on entire `src/` or `app/`
+3. Run simplifier agent — catch overengineering before it sets in
+4. Run product-manager agent — verify scope matches spec, no creep
+5. Run devops agent — if Dockerfile/compose/infra exists, validate it
+6. Send full diff to codex-review
+7. Address all review findings
+8. Update `.claude/PROGRESS.md` to reflect build completion
+9. Suggest running `/ship` for final validation
